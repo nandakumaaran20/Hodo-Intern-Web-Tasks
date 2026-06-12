@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Render Clone</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+darkMode:'class'
+}
+</script>
+
+<style>
+
+.word-container{
+display:inline-block;
+min-width:220px;
+}
+
+.gradient-word{
+background:linear-gradient(
+90deg,
+#8b5cf6,
+#ec4899,
+#f97316
+);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.cursor{
+display:inline-block;
+width:8px;
+height:55px;
+background:#d9d9d9;
+animation:blink 1s infinite;
+}
+
+.dark .cursor{
+background:white;
+}
+
+@keyframes blink{
+50%{
+opacity:0;
+}
+}
+
+.spark{
+animation:spark 3s infinite ease-in-out;
+}
+
+@keyframes spark{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-8px);
+}
+}
+
+</style>
+
+</head>
+
+<body class="bg-[#f8f8f8] text-black dark:bg-[#111111] dark:text-white transition-all duration-500">
+
+<!-- NAVBAR -->
+
+<header class="sticky top-0 z-50 border-b border-gray-300 dark:border-gray-700 bg-[#f8f8f8]/90 dark:bg-[#111111]/90 backdrop-blur">
+
+<div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+
+<div class="flex items-center justify-between h-16">
+
+<!-- LEFT -->
+
+<div class="flex items-center gap-10">
+
+<svg width="110" height="21" viewBox="0 0 110 21" fill="#000" xmlns="http://www.w3.org/2000/svg" aria-label="Render" ><path d="M38.1801 3.45902C41.7067 3.45902 43.9994 5.45905 43.9994 8.67133C43.9994 11.0232 42.6512 12.7708 40.5375 13.5165L44.6811 20.6218H41.6077L37.7421 13.8798H33.4728V20.6218H30.8259V3.45902H38.1801ZM33.469 5.84911V11.5165H38.0544C40.1567 11.5165 41.2421 10.3387 41.2421 8.67133C41.2421 6.96576 40.1605 5.84911 38.0544 5.84911H33.469Z"></path><path d="M51.4145 8.22773C54.9412 8.22773 57.2339 10.8587 57.2339 14.1093C57.2339 14.4878 57.2073 14.8817 57.1349 15.2718H47.7508C47.865 17.0921 49.4151 18.5223 51.506 18.5223C53.0179 18.5223 54.2252 17.876 55.1316 16.4496L56.9711 17.7919C55.8514 19.8149 53.6463 20.878 51.506 20.878C47.8536 20.878 45.1686 18.1705 45.1686 14.5682C45.1686 10.9467 47.7508 8.22773 51.4145 8.22773ZM54.7013 13.398C54.5489 11.6924 53.1284 10.4878 51.3879 10.4878C49.537 10.4878 48.124 11.6886 47.8117 13.398H54.7013Z"></path><path d="M59.5495 20.6218V8.48012H62.0555V10.0098C62.4592 9.39027 63.6055 8.22773 65.7725 8.22773C69.0973 8.22773 70.8492 10.3004 70.8492 13.2488V20.6218H68.3547V13.7804C68.3547 11.7689 67.2578 10.6063 65.3803 10.6063C63.5408 10.6063 62.044 11.7689 62.044 13.7804V20.6218H59.5495Z"></path><path d="M78.9766 8.22773C81.0293 8.22773 82.389 8.98491 83.284 10.136V2.81274H85.7785V20.6218H83.284V18.9659C82.389 20.117 81.0293 20.8742 78.9766 20.8742C75.5375 20.8742 72.9058 18.2164 72.9058 14.4878C72.9058 10.7555 75.5375 8.22773 78.9766 8.22773ZM75.3966 14.4878C75.3966 16.725 76.9466 18.6217 79.2774 18.6217C81.6082 18.6217 83.2687 16.725 83.2687 14.4878C83.2687 12.2507 81.593 10.4801 79.2774 10.4801C76.9466 10.4763 75.3966 12.2469 75.3966 14.4878Z"></path><path d="M94.1382 8.22773C97.6648 8.22773 99.9575 10.8587 99.9575 14.1093C99.9575 14.4878 99.9309 14.8817 99.8585 15.2718H90.4744C90.5886 17.0921 92.1387 18.5223 94.2295 18.5223C95.7415 18.5223 96.9488 17.876 97.8552 16.4496L99.6947 17.7919C98.575 19.8149 96.3699 20.878 94.2295 20.878C90.5772 20.878 87.8922 18.1705 87.8922 14.5682C87.8884 10.9467 90.4706 8.22773 94.1382 8.22773ZM97.4249 13.398C97.2725 11.6924 95.852 10.4878 94.1115 10.4878C92.2606 10.4878 90.8476 11.6886 90.5353 13.398H97.4249Z"></path><path d="M102.368 20.6218V8.48012H104.874V10.136C105.556 8.809 106.702 8.22773 108.024 8.22773C108.968 8.22773 109.688 8.52983 109.688 8.52983L109.425 10.832C109.288 10.7823 108.744 10.5528 107.952 10.5528C106.615 10.5528 104.878 11.2603 104.878 14.006V20.6218H102.368Z"></path><path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"></path></svg>
+<nav class="hidden lg:flex items-center gap-8 text-sm">
+
+<a href="#" class="flex items-center gap-1">
+Product
+<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+</svg>
+</a>
+
+<a href="#" class="flex items-center gap-1">
+Developers
+<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+</svg>
+</a>
+
+<a href="#" class="flex items-center gap-1">
+Solutions
+<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+</svg>
+</a>
+
+<a href="#">Pricing</a>
+
+<a href="#" class="flex items-center gap-1">
+Company
+<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+</svg>
+</a>
+
+</nav>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="flex items-center">
+
+<div class="hidden lg:flex items-center">
+
+<a href="#" class="px-5 text-sm">
+Migrate to Render
+</a>
+
+<a href="#" class="px-5 text-sm">
+Sign In
+</a>
+
+<a href="#" class="bg-black text-white dark:bg-white dark:text-black px-6 py-4 text-sm">
+Get Started
+</a>
+
+</div>
+
+<button id="menuBtn" class="lg:hidden">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+fill="none"
+viewBox="0 0 24 24"
+stroke-width="1.5"
+stroke="currentColor"
+class="w-7 h-7">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+
+</svg>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="relative overflow-hidden">
+
+<div class="absolute inset-0 opacity-40">
+
+<div
+class="absolute right-0 top-0 w-[55%] h-full
+bg-[linear-gradient(#d9d9d9_1px,transparent_1px),linear-gradient(90deg,#d9d9d9_1px,transparent_1px)]
+bg-[size:84px_84px]">
+</div>
+
+</div>
+
+<div class="max-w-[1400px] mx-auto px-6 lg:px-20">
+
+<div class="grid lg:grid-cols-2 items-center min-h-[88vh]">
+
+<!-- LEFT -->
+
+<div class="py-16 lg:py-0">
+
+<h1 class="leading-none font-light text-[52px] sm:text-[70px] lg:text-[74px]">
+
+Your fastest path to production for
+
+
+<span class="word-container">
+<span id="changingWord" class="gradient-word">
+apps
+</span>
+</span>
+
+<span class="cursor"></span>
+
+</h1>
+
+<p class="mt-10 text-lg text-gray-600 dark:text-gray-300 max-w-xl">
+
+Intuitive infrastructure to scale any app or agent
+from your first user to your billionth.
+
+</p>
+
+<div class="flex flex-col sm:flex-row gap-4 mt-14">
+
+<a href="#"
+class="bg-black dark:bg-white dark:text-black text-white px-8 py-5 w-fit">
+
+Start for free →
+
+</a>
+
+<a href="#"
+class="border border-black dark:border-white px-8 py-5 w-fit">
+
+Migrate to Render
+
+</a>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="hidden lg:block relative h-[700px]">
+
+<div
+class="absolute top-24 left-24
+bg-[#4a4a4a]
+text-white
+px-8 py-6
+shadow-xl">
+
+<code>$ git push</code>
+
+</div>
+
+<svg
+class="absolute top-[170px] left-[280px]"
+width="220"
+height="140">
+
+<path
+d="M0 0 L0 60 L60 60"
+stroke="#9333ea"
+stroke-width="2"
+fill="none"/>
+
+</svg>
+
+<div
+class="absolute top-[240px] left-[340px]
+text-xs tracking-[4px]
+uppercase text-gray-500">
+
+Production
+
+</div>
+
+<div
+class="absolute top-[260px] left-[330px]
+grid grid-cols-2 gap-5">
+
+<div class="bg-white dark:bg-[#1a1a1a] border dark:border-gray-700 p-4 w-[260px]">
+<div class="flex justify-between text-xs mb-4">
+<span>app-backend</span>
+<span>Deploying</span>
+</div>
+</div>
+
+<div class="bg-white dark:bg-[#1a1a1a] border dark:border-gray-700 p-4 w-[260px]">
+<div class="flex justify-between text-xs mb-4">
+<span>app-frontend</span>
+<span>Healthy</span>
+</div>
+</div>
+
+<div class="bg-white dark:bg-[#1a1a1a] border dark:border-gray-700 p-4 w-[260px]">
+<div class="flex justify-between text-xs mb-4">
+<span>app-database</span>
+<span>Available</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FLOATING THEME TOGGLE -->
+
+<button
+id="themeToggle"
+class="fixed bottom-5 right-5 z-[999]
+w-12 h-12
+bg-white dark:bg-black
+border border-gray-300 dark:border-gray-700
+shadow-lg
+flex items-center justify-center">
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+fill="none"
+viewBox="0 0 24 24"
+stroke-width="1.5"
+stroke="currentColor"
+class="w-5 h-5 dark:hidden">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+d="M12 3v2.25M12 18.75V21M4.22 4.22l1.59 1.59M18.19 18.19l1.59 1.59M3 12h2.25M18.75 12H21"/>
+
+</svg>
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+fill="none"
+viewBox="0 0 24 24"
+stroke-width="1.5"
+stroke="currentColor"
+class="w-5 h-5 hidden dark:block">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75"/>
+
+</svg>
+
+</button>
+<!-- Trusted Companies -->
+<section class="py-28 border-t border-b bg-white">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <p
+            class="uppercase tracking-[4px] text-center text-zinc-500 mb-16">
+
+            Trusted by over 6 million builders
+
+        </p>
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 items-center">
+
+    <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69212c90e8179d12143d92e5/b8090db64_image147.png" class="h-8 mx-auto object-contain">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/FORTUNE-LOGO-2016.png/960px-FORTUNE-LOGO-2016.png" class="h-10 mx-auto object-contain">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Cognition_AI.png" class="h-10 mx-auto object-contain">
+    <img src="https://thelounge.gi/wp-content/uploads/2017/09/tripadvisor.png" class="h-10 mx-auto object-contain">
+    <img src="https://images.teamtailor-cdn.com/images/s3/teamtailor-production/gallery_picture-v6/image_uploads/541e7504-0015-4392-9e2e-f78a68b44c65/original.png" class="h-10 mx-auto object-contain">
+
+    <img src="https://cdn.prod.website-files.com/662b641a42a7c6dc6e1736b1/676303126be9ba02bc7b3217_1655873659shopify-black-logo.png" class="h-10 mx-auto object-contain">
+       <img src="https://www.poweredbylight.com/partners/partner%20logo%20-%20meter.png" class="h-10 mx-auto object-contain">
+    <img src="https://theclarkpartnership.com/wp-content/uploads/2023/05/Contentsquare-dark.png" class="h-10 mx-auto object-contain">
+    <img src="https://ml.globenewswire.com/Resource/Download/9ae2b0db-5182-4ced-923c-f8e4c057bdb0" class="h-10 mx-auto object-contain">
+    <img src="https://www.wikicorporates.org/mediawiki/images/thumb/9/99/McKinsey-and-Company-2019.svg/500px-McKinsey-and-Company-2019.svg.png" class="h-12 mx-auto object-contain">
+
+</div>
+
+    </div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section class="py-20 lg:py-28 bg-[#f8f8f8] dark:bg-[#111111]">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-6">
+
+        <!-- Header -->
+
+        <div class="mb-14 lg:mb-16">
+
+            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight">
+                How it works
+            </h2>
+
+        </div>
+
+        <!-- Cards -->
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+            <!-- CARD 1 -->
+
+            <div
+                class="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#171717]
+                p-6 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-2">
+
+                <div
+                    class="w-10 h-10 bg-purple-600 text-white flex items-center justify-center text-lg mb-8">
+
+                    1
+
+                </div>
+
+                <h3
+                    class="text-3xl lg:text-4xl font-light mb-5 leading-tight">
+
+                    Select a service
+
+                </h3>
+
+                <p
+                    class="text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+
+                    Choose what you need to run your apps,
+                    APIs, agent logic, databases,
+                    cron jobs, and more.
+
+                </p>
+
+                <div
+                    class="mt-10 h-72 lg:h-80 overflow-hidden border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+
+                    <img
+                        src="https://cdn.sanity.io/images/hvk0tap5/production/28440bb672da69fdfa45fecdf5a6047e9427cda8-365x400.svg?fit=max&auto=format"
+                        alt="Select a service"
+                        class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">
+
+                </div>
+
+            </div>
+
+            <!-- CARD 2 -->
+
+            <div
+                class="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#171717]
+                p-6 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-2">
+
+                <div
+                    class="w-10 h-10 bg-purple-600 text-white flex items-center justify-center text-lg mb-8">
+
+                    2
+
+                </div>
+
+                <h3
+                    class="text-3xl lg:text-4xl font-light mb-5 leading-tight">
+
+                    Deploy your code
+
+                </h3>
+
+                <p
+                    class="text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+
+                    Just connect your repo.
+                    Render deploys on the right runtime
+                    for your framework automatically.
+
+                </p>
+
+                <div
+                    class="mt-10 h-72 lg:h-80 overflow-hidden border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+
+                    <img
+                        src="https://cdn.sanity.io/images/hvk0tap5/production/f317b9342bf7ded83a535f08ee6b31f4b6fae985-360x400.svg?fit=max&auto=format"
+                        alt="Deploy your code"
+                        class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">
+
+                </div>
+
+            </div>
+
+            <!-- CARD 3 -->
+
+            <div
+                class="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#171717]
+                p-6 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-2">
+
+                <div
+                    class="w-10 h-10 bg-purple-600 text-white flex items-center justify-center text-lg mb-8">
+
+                    3
+
+                </div>
+
+                <h3
+                    class="text-3xl lg:text-4xl font-light mb-5 leading-tight">
+
+                    Render does the rest
+
+                </h3>
+
+                <p
+                    class="text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+
+                    Get instant networking,
+                    scaling, previews,
+                    deploys, rollbacks,
+                    and monitoring.
+
+                </p>
+
+                <div
+                    class="mt-10 h-72 lg:h-80 overflow-hidden border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+
+                    <img
+                        src="https://cdn.sanity.io/images/hvk0tap5/production/e9dd4a0fbe54a0d249e4f8f1b8aa34e9db9c258c-369x404.svg?fit=max&auto=format"
+                        alt="Render does the rest"
+                        class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- INFRASTRUCTURE SECTION -->
+
+<section class="py-24 lg:py-32 bg-[#f8f8f8] dark:bg-[#111111]">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-6">
+
+        <!-- Heading -->
+
+        <div class="max-w-4xl mb-20">
+
+            <h2 class="text-5xl lg:text-7xl font-light leading-[1.05] tracking-tight">
+
+                Intuitive infrastructure,
+                <br>
+                designed for builders
+
+            </h2>
+
+            <p class="mt-6 text-lg lg:text-xl text-zinc-600 dark:text-zinc-400">
+
+                Ship software faster with integrated primitives that just work.
+
+            </p>
+
+        </div>
+
+        <!-- Feature Grid -->
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16">
+
+            <!-- Feature 1 -->
+            <div class="group">
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M4 6h16M4 12h16M4 18h16"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Native language runtimes
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    High-performance environments for nearly every popular framework.
+                </p>
+
+            </div>
+
+            <!-- Feature 2 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M7 7h10v10H7z"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Infrastructure as code
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Define, deploy, and version your entire architecture with a single YAML file.
+                </p>
+
+            </div>
+
+            <!-- Feature 3 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M12 4v16M4 12h16"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Isolated environments
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Prevent non-production environments from accessing production services.
+                </p>
+
+            </div>
+
+            <!-- Feature 4 -->
+            <div>
+
+                <div class="flex items-center gap-3 mb-3">
+
+                    <svg class="w-6 h-6 text-purple-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M3 7h18v10H3z"/>
+
+                    </svg>
+
+                    <span class="text-[10px] uppercase tracking-[2px] border border-purple-400 text-purple-500 px-2 py-1">
+                        Coming Soon
+                    </span>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Object storage
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Store and retrieve files from your services with lightweight SDKs.
+                </p>
+
+            </div>
+
+            <!-- Feature 5 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M4 8l8-4 8 4-8 4-8-4z"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Redis-compatible Key Value
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Low-latency in-memory storage ideal for shared caches and job queues.
+                </p>
+
+            </div>
+
+            <!-- Feature 6 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M8 8h8v8H8z"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    WebSockets
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Build real-time features with long-lived, bi-directional streaming.
+                </p>
+
+            </div>
+
+            <!-- Feature 7 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <circle cx="12" cy="12" r="5" stroke-width="1.5"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Edge caching
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Serve static assets faster with caching powered by Render’s global CDN.
+                </p>
+
+            </div>
+
+            <!-- Feature 8 -->
+            <div>
+
+                <svg class="w-6 h-6 text-purple-500 mb-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M6 6h12v12H6z"/>
+
+                </svg>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Fully-managed TLS
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Free TLS certificates for every domain, including wildcards.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- SECURITY SECTION -->
+
+<section class="relative py-24 lg:py-32 bg-[#f8f8f8] dark:bg-[#111111] overflow-hidden">
+
+    <!-- Background Grid -->
+
+    <div class="absolute top-0 right-0 w-1/3 h-full opacity-30 hidden lg:block">
+
+        <div class="w-full h-full
+        bg-[linear-gradient(#d9d9d9_1px,transparent_1px),linear-gradient(90deg,#d9d9d9_1px,transparent_1px)]
+        bg-[size:84px_84px]">
+        </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
+
+        <!-- Heading -->
+
+        <div class="max-w-4xl mb-20">
+
+            <h2 class="text-5xl lg:text-7xl font-light leading-[1.05] tracking-tight">
+
+                Stay secure and
+                <br>
+                resilient by default
+
+            </h2>
+
+            <p class="mt-6 text-lg lg:text-xl text-zinc-600 dark:text-zinc-400">
+
+                Build products, not compliance.
+
+            </p>
+
+        </div>
+
+        <!-- Features -->
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-14">
+
+            <!-- 1 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 9h16.5M3.75 15h16.5"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Private networking
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Keep internal traffic off the public internet without VPC complexity.
+                </p>
+
+            </div>
+
+            <!-- 2 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 3v18M3 12h18"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Built-in DDoS protection
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Protect every service from attacks without extra configuration or add-ons.
+                </p>
+
+            </div>
+
+            <!-- 3 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Managed compliance
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Meet SOC 2 Type 2, HIPAA, ISO 27001, and GDPR requirements without overhead.
+                </p>
+
+            </div>
+
+            <!-- 4 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4 6h16M4 12h16M4 18h16"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Audit controls
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Built-in audit logging and monitoring for platform events.
+                </p>
+
+            </div>
+
+            <!-- 5 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16.5 10.5V6.75A4.5 4.5 0 0 0 7.5 6.75v3.75"/>
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6.75 10.5h10.5v9H6.75z"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Encryption at rest
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Minimum AES-128 encryption for databases, backups, and secrets.
+                </p>
+
+            </div>
+
+            <!-- 6 -->
+
+            <div>
+
+                <div class="w-10 h-10 bg-purple-600 flex items-center justify-center mb-5">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="white"
+                        class="w-5 h-5">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/>
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4.5 20.25a7.5 7.5 0 0 1 15 0"/>
+
+                    </svg>
+
+                </div>
+
+                <h3 class="text-2xl font-light mb-3">
+                    Unique user identification
+                </h3>
+
+                <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    Control services and resources with role-based access control.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="flex flex-col sm:flex-row gap-4 mt-20">
+
+            <a href="#"
+                class="bg-black dark:bg-white dark:text-black text-white px-8 py-4 w-fit">
+
+                Trust center →
+
+            </a>
+
+            <a href="#"
+                class="border border-black dark:border-white px-8 py-4 w-fit">
+
+                HIPAA on Render →
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="relative bg-black text-white overflow-hidden">
+
+    <!-- Top Footer -->
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-6 py-20 relative z-10">
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
+
+            <!-- FEATURES -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Features
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#" class="hover:text-white">Render CLI</a></li>
+                    <li><a href="#" class="hover:text-white">Render MCP</a></li>
+                    <li><a href="#" class="hover:text-white">Autoscaling</a></li>
+                    <li><a href="#" class="hover:text-white">Private Networking</a></li>
+                    <li><a href="#" class="hover:text-white">Persistent Disks</a></li>
+                    <li><a href="#" class="hover:text-white">Infrastructure As Code</a></li>
+                    <li><a href="#" class="hover:text-white">Preview Environments</a></li>
+                    <li><a href="#" class="hover:text-white">Zero Downtime Deploys</a></li>
+                    <li><a href="#" class="hover:text-white">Docker Support</a></li>
+                    <li><a href="#" class="hover:text-white">REST API</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- SERVICES -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Services
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#">Static Sites</a></li>
+                    <li><a href="#">Web Services</a></li>
+                    <li><a href="#">Render Workflows</a></li>
+                    <li><a href="#">Private Services</a></li>
+                    <li><a href="#">Background Workers</a></li>
+                    <li><a href="#">Cron Jobs</a></li>
+                    <li><a href="#">Render Postgres</a></li>
+                    <li><a href="#">Render Key Value</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- LEGAL -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Legal
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Shared Responsibility Model</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">DMCA Policy</a></li>
+                    <li><a href="#">DPA</a></li>
+                    <li><a href="#">Acceptable Use</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- RESOURCES -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Resources
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Docs</a></li>
+                    <li><a href="#">Changelog</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Render for Startups</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- COMPANY -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Company
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Brand Kit</a></li>
+                    <li><a href="#">Contact</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- COMPARISONS + SOCIALS -->
+
+            <div>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Comparisons
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400 mb-8">
+
+                    <li><a href="#">Vercel</a></li>
+                    <li><a href="#">Heroku</a></li>
+                    <li><a href="#">Railway</a></li>
+
+                </ul>
+
+                <h4 class="text-[11px] uppercase tracking-[2px] font-semibold mb-5 text-zinc-400">
+                    Socials
+                </h4>
+
+                <ul class="space-y-3 text-sm text-zinc-400">
+
+                    <li><a href="#">X / Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Reddit</a></li>
+                    <li><a href="#">YouTube</a></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PURPLE PIXEL DECORATIONS -->
+
+    <div class="absolute left-0 bottom-0 w-72 h-72 opacity-90 pointer-events-none">
+
+        <div class="w-full h-full bg-gradient-to-br from-purple-700 via-purple-500 to-purple-700 [clip-path:polygon(0_0,40%_0,40%_20%,60%_20%,60%_40%,100%_40%,100%_100%,0_100%)]">
+        </div>
+
+    </div>
+
+    <div class="absolute right-0 bottom-0 w-40 h-40 opacity-90 pointer-events-none">
+
+        <div class="w-full h-full bg-gradient-to-br from-purple-700 via-purple-500 to-purple-700 [clip-path:polygon(0_0,100%_0,100%_100%,70%_100%,70%_60%,40%_60%,40%_30%,0_30%)]">
+        </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+
+    <div class="border-t border-zinc-800 relative z-10">
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+            <div class="flex gap-5 text-sm text-zinc-400">
+
+                <a href="#" class="hover:text-white">X</a>
+                <a href="#" class="hover:text-white">LinkedIn</a>
+                <a href="#" class="hover:text-white">GitHub</a>
+
+            </div>
+
+            <p class="text-sm text-zinc-500">
+                © Render 2026
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+<script>
+
+const words = [
+"apps",
+"APIs",
+"agents",
+"websites"
+];
+
+let current = 0;
+
+setInterval(()=>{
+
+current++;
+
+if(current >= words.length){
+current = 0;
+}
+
+document.getElementById("changingWord").textContent =
+words[current];
+
+},2000);
+
+if(localStorage.theme==="dark"){
+document.documentElement.classList.add("dark");
+}
+
+document.getElementById("themeToggle")
+.addEventListener("click",()=>{
+
+document.documentElement.classList.toggle("dark");
+
+if(document.documentElement.classList.contains("dark")){
+localStorage.theme="dark";
+}
+else{
+localStorage.theme="light";
+}
+
+});
+
+</script>
+
+</body>
+</html>
